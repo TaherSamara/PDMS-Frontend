@@ -1,0 +1,173 @@
+<div class="header">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center">
+        <div class="col">
+          <h2 class="header-title">
+            <i class="fe fe-user me-2"></i>
+            <span>Users</span>
+          </h2>
+        </div>
+        <div class="col-auto" *ngIf="publicService.hasPermission(['ADD_USER'])">
+          <button class="btn btn-sm btn-custom btn-pill" routerLink="/users/add-user">
+            <i class="fe fe-plus me-2"></i>
+            <span>New User</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex align-items-center input-group-merge input-group-flush input-group position-relative">
+        <i class="fe fe-search text-muted position-absolute mb-1 me-3"></i>
+        <input [(ngModel)]="searchText" class="form-control m-0 ps-4" placeholder="Type to search"
+          (ngModelChange)="list(1)">
+      </div>
+      <div class="ms-2 d-none d-sm-block w-5">
+        <select [(ngModel)]="size" class="form-select form-select-sm form-select-white m-0" [disabled]="totalCount == 0"
+          (change)="list(1)">
+          <option *ngFor="let number of [publicService.numOfRows,15,25,50,100,250,500,1000]" [value]="number">
+            {{ number }}
+          </option>
+        </select>
+      </div>
+      <div class="ms-2 d-none d-sm-block">
+        <button class="btn btn-sm btn-danger" (click)="reset()">
+          <i class="fe fe-filter me-2"></i>
+          <span>Reset</span>
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm table-nowrap card-table table-hover">
+        <thead>
+          <tr>
+            <th class="w-10">#No</th>
+            <th class="w-20">Fullname</th>
+            <th class="w-20">Contact</th>
+            <th class="w-20">Address</th>
+            <th class="w-10">Role</th>
+            <th class="w-10" *ngIf="publicService.hasPermission(['ACTIVE_USER'])">Active</th>
+            <th class="w-10" *ngIf="publicService.hasPermission(['EDIT_USER', 'DELETE_USER'])">Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!(httpService.getLoading('usersLoader') | async) && totalRecords > 0">
+          <tr
+            *ngFor="let user of users | paginate: { itemsPerPage: size, currentPage: page, totalItems: totalRecords }; let i = index">
+            <td>#{{ i + 1 }}</td>
+            <td>
+              <span class="avatar avatar-sm me-3">
+                <a target="_blank" [href]="user?.image">
+                  <img [src]="user?.image" class="avatar-img border rounded-2">
+                </a>
+              </span>
+              <span>{{ user?.first_name + ' ' + user?.last_name }}</span>
+            </td>
+            <td>
+              <span class="text-dark d-block fs-5">{{ user?.phone || '-' }}</span>
+              <span class="text-muted fw-bold d-block fs-5">
+                <i class="fe fe-mail me-2"></i>
+                <span>{{ user?.company_email || '-' }}</span>
+              </span>
+            </td>
+            <td>
+              <span [title]="user?.address?.length > 50 ? user?.address : ''">
+                {{ (user?.address | maxLength:50) || '-' }}
+              </span>
+            </td>
+            <td>
+              <span [title]="user?.role?.length > 30 ? user?.role : ''">
+                {{ (user?.role | maxLength:30) || '-' }}
+              </span>
+            </td>
+            <td *ngIf="publicService.hasPermission(['ACTIVE_USER'])">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" [checked]="user?.is_active" (change)="activate(user)"
+                  [disabled]="user?.id == 1">
+              </div>
+            </td>
+
+            <td *ngIf="publicService.hasPermission(['EDIT_USER', 'DELETE_USER'])">
+              <div class="btn-group dropstart">
+                <span data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fe fe-more-vertical black-menu fs-2"></i>
+                </span>
+                <ul class="dropdown-menu dropdown-menu-end" *ngIf="user?.id != 1">
+                  <li>
+                    <a class="dropdown-item" (click)="resetPassword(user)">
+                      <i class="fe fe-refresh-cw me-2"></i>Reset Password
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="invite(user)">
+                      <i class="fe fe-send me-2"></i>Invite
+                    </a>
+                  </li>
+                  <li *ngIf="publicService.hasPermission(['EDIT_USER'])">
+                    <a class="dropdown-item" [routerLink]="['/users/edit-user/' + user.id]">
+                      <i class="fe fe-edit me-2"></i>Edit
+                    </a>
+                  </li>
+                  <li *ngIf="publicService.hasAllPermissions(['EDIT_USER', 'DELETE_USER'])">
+                    <hr class="m-2">
+                  </li>
+                  <li *ngIf="publicService.hasPermission(['DELETE_USER'])">
+                    <a class="dropdown-item" (click)="delete(user)">
+                      <i class="fe fe-trash-2 text-danger me-2"></i>
+                      <span class="text-danger">Delete</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- loading -->
+        <tbody *ngIf="(httpService.getLoading('usersLoader') | async)">
+          <tr *ngFor="let number of [].constructor(+size+1)">
+            <td>
+              <ngx-skeleton-loader appearance="line" animation="progress-dark"
+                [theme]="{width:'70%',height:'20px','border-radius':'3px','margin':'0'}"></ngx-skeleton-loader>
+            </td>
+            <td style="padding: 14px 16px;">
+              <span class="me-3">
+                <ngx-skeleton-loader appearance="circle" animation="progress-dark"
+                  [theme]="{width:'40px',height:'40px','border-radius':'6px','margin':'0'}"></ngx-skeleton-loader>
+              </span>
+              <span class="text-dark">
+                <ngx-skeleton-loader appearance="line" animation="progress-dark"
+                  [theme]="{width:'50%',height:'20px','border-radius':'3px'}"></ngx-skeleton-loader>
+              </span>
+            </td>
+            <td>
+              <span class="d-block">
+                <ngx-skeleton-loader appearance="line" animation="progress-dark"
+                  [theme]="{width:'50%',height:'14px','border-radius':'3px','margin':'0'}"></ngx-skeleton-loader>
+              </span>
+              <span class="d-block">
+                <ngx-skeleton-loader appearance="line" animation="progress-dark"
+                  [theme]="{width:'80%',height:'14px','border-radius':'3px','margin':'0'}"></ngx-skeleton-loader>
+              </span>
+            </td>
+            <td *ngFor="let number of [].constructor(+4)">
+              <ngx-skeleton-loader appearance="line" animation="progress-dark"
+                [theme]="{width:'70%',height:'20px','border-radius':'3px','margin':'0'}"></ngx-skeleton-loader>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- if no results -->
+    <app-no-results [isLoading$]="httpService.getLoading('usersLoader') "
+      [totalRecords]="totalRecords"></app-no-results>
+
+    <!-- pagination -->
+    <app-pagination [isLoading$]="httpService.getLoading('usersLoader') " [totalRecords]="totalRecords" [size]="size"
+      (pageChange)="list($event)"></app-pagination>
+  </div>
+</div>

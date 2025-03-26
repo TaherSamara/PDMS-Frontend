@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 24 24" width="20px" height="20px">
+    <defs>
+        <circle id="spreadthelove-a" cx="11.5" cy="11.5" r="11"></circle>
+    </defs>
+    <g fill="rgb(255, 64, 25);" transform="translate(.5 .5)">
+        <mask id="spreadthelove-b" fill="#fff">
+            <use xlink:href="#spreadthelove-a"></use>
+        </mask>
+        <use fill="#FF4019" xlink:href="#spreadthelove-a"></use>
+        <path fill="#FFF"
+            d="M4,10 C4,7.790861 5.790861,6 8,6 C9.50601337,6 10.8176355,6.83228764 11.5,8.06199641 C12.1823645,6.83228764 13.4939866,6 15,6 C17.209139,6 19,7.790861 19,10 C19,14.209139 11.5,18.9380036 11.5,18.9380036 C11.5,18.9380036 4,14.209139 4,10 Z"
+            mask="url(#spreadthelove-b)"></path>
+    </g>
+</svg>

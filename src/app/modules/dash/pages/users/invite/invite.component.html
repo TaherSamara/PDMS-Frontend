@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h4 class="modal-title">Invite Confirmation</h4>
+    <div>
+        <i class="fe fe-x black-menu" (click)="activeModal.dismiss()"></i>
+    </div>
+</div>
+<div class="modal-body">
+    Do you want to invite {{ user.first_name }} {{ user.last_name }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-light" (click)="activeModal.dismiss()">
+        <i class="fe fe-x me-2"></i>Close
+    </button>
+    <button class="btn btn-sm btn-primary" [disabled]="(httpService.getLoading('inviteUserLoader') | async)"
+        (click)="invite()">
+        <ng-container *ngIf="(httpService.getLoading('inviteUserLoader') | async)">
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            <span>Inviting...</span>
+        </ng-container>
+        <ng-container *ngIf="!(httpService.getLoading('inviteUserLoader') | async)">
+            <i class="fe fe-check me-2"></i>
+            <span>Invite</span>
+        </ng-container>
+    </button>
+</div>

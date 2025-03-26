@@ -1,0 +1,145 @@
+<div class="header">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h2 class="header-title">
+                        <i class="fe fe-cast me-2"></i>
+                        <span>Devices</span>
+                    </h2>
+                </div>
+                <div class="col-auto d-flex" *ngIf="publicService.hasPermission(['ADD_DEVICE', 'IMPORT_DEVICES'])">
+                    <button class="btn btn-sm btn-custom btn-pill me-2" (click)="add()"
+                        *ngIf="publicService.hasPermission(['ADD_DEVICE'])">
+                        <i class="fe fe-plus me-2"></i>
+                        <span>New Device</span>
+                    </button>
+                    <button class="btn btn-sm btn-success btn-pill" (click)="import()"
+                        *ngIf="publicService.hasPermission(['IMPORT_DEVICES'])">
+                        <i class="fe fe-file fs-4 me-2"></i>
+                        <span>Import File</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex align-items-center input-group-merge input-group-flush input-group position-relative">
+                <i class="fe fe-search text-muted position-absolute mb-1 me-3"></i>
+                <input [(ngModel)]="searchText" class="form-control m-0 ps-4" placeholder="Type to search"
+                    (ngModelChange)="list(1)">
+            </div>
+            <div class="ms-2 d-none d-sm-block w-12">
+                <select [(ngModel)]="status" class="form-select form-select-sm form-select-white m-0"
+                    (change)="list(1)">
+                    <option value="0">All Statuses</option>
+                    <option value="1">Online</option>
+                    <option value="2">Offline (Short-Term)</option>
+                    <option value="3">Offline (Long-Term)</option>
+                </select>
+            </div>
+            <div class="ms-2 d-none d-sm-block w-5">
+                <select [(ngModel)]="size" class="form-select form-select-sm form-select-white m-0" (change)="list(1)">
+                    <option *ngFor="let number of [publicService.numOfRows,15,25,50,100,250,500,1000]" [value]="number">
+                        {{ number }}
+                    </option>
+                </select>
+            </div>
+            <div class="ms-2 d-none d-sm-block">
+                <button class="btn btn-sm btn-danger" (click)="reset()">
+                    <i class="fe fe-filter me-2"></i>
+                    <span>Reset</span>
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="card-table table table-nowrap table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th class="w-10">#No</th>
+                        <th class="w-20">Device Name</th>
+                        <th class="w-15">IP Address</th>
+                        <th class="w-15">Line Code</th>
+                        <th class="w-10">Device Status</th>
+                        <th class="w-10">Device Type</th>
+                        <th class="w-10">Offline Since</th>
+                        <th class="w-10">Downtime</th>
+                        <th class="w-10" *ngIf="publicService.hasPermission(['EDIT_DEVICE', 'DELETE_DEVICE'])">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!(httpService.getLoading ('devicesLoader') | async) && totalRecords > 0">
+                    <tr
+                        *ngFor="let device of devices | paginate: { itemsPerPage: size, currentPage: page, totalItems: totalRecords }; let i = index">
+                        <td>#{{ i + 1 }}</td>
+                        <td>
+                            <span [title]="device?.name?.length > 40 ? device?.name : ''">
+                                {{ device?.name | maxLength:40 }}
+                            </span>
+                        </td>
+                        <td>{{ device?.ip_address }}</td>
+                        <td>{{ device?.line_code }}</td>
+                        <td>
+                            <span *ngIf="device?.status==1" class="badge text-white bg-success">
+                                Online
+                            </span>
+                            <span *ngIf="device?.status==2" class="badge text-white bg-warning">
+                                Offline (Short-Term)
+                            </span>
+                            <span *ngIf="device?.status==3" class="badge text-white bg-danger">
+                                Offline (Long-Term)
+                            </span>
+                        </td>
+                        <td>{{ device?.device_type?.toString().replace('_', ' ') | titlecase }}</td>
+                        <td>{{ device?.status === 1 ? '-' : (device?.offline_since | date: 'dd/MM, hh:mm a') }}</td>
+                        <td>{{ device?.status === 1 ? '-' : device?.downtime }}</td>
+                        <td *ngIf="publicService.hasPermission(['EDIT_DEVICE', 'DELETE_DEVICE'])">
+                            <div class="btn-group dropstart">
+                                <span data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fe fe-more-vertical black-menu fs-2"></i>
+                                </span>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li *ngIf="publicService.hasPermission(['EDIT_DEVICE'])">
+                                        <a class="dropdown-item" (click)="edit(device)">
+                                            <i class="fe fe-edit me-2"></i>Edit
+                                        </a>
+                                    </li>
+                                    <li *ngIf="publicService.hasAllPermissions(['EDIT_DEVICE', 'DELETE_DEVICE'])">
+                                        <hr class="m-2">
+                                    </li>
+                                    <li *ngIf="publicService.hasPermission(['DELETE_DEVICE'])">
+                                        <a class="dropdown-item" (click)="delete(device)">
+                                            <i class="fe fe-trash-2 text-danger me-2"></i>
+                                            <span class="text-danger">Delete</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="(httpService.getLoading ('devicesLoader') | async)">
+                    <tr *ngFor="let number of [].constructor(+size+1)">
+                        <td *ngFor="let number of [].constructor(+9)">
+                            <ngx-skeleton-loader appearance="line" animation="progress-dark"
+                                [theme]="{width:'60%',height: '24.6px','border-radius': '3px','margin': '0'}"></ngx-skeleton-loader>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- if no results -->
+        <app-no-results [isLoading$]="httpService.getLoading ('devicesLoader')"
+            [totalRecords]="totalRecords"></app-no-results>
+
+        <!-- pagination -->
+        <app-pagination [isLoading$]="httpService.getLoading ('devicesLoader')" [totalRecords]="totalRecords"
+            [size]="size" (pageChange)="list($event)"></app-pagination>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+<form [formGroup]="form" novalidate="novalidate">
+    <div class="modal-header">
+        <h4 class="modal-title">{{ device ? 'Edit Device' : 'Add New Device' }}</h4>
+        <div>
+            <i class="fe fe-x black-menu" (click)="activeModal.dismiss()"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control" formControlName="Name" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['Name'].invalid, 'is-valid': submitted && f['Name'].valid}" />
+                        <label class="form-label">Name <sup class="text-danger fs-5">*</sup></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control mb-0" formControlName="IpAddress" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['IpAddress'].invalid, 'is-valid': submitted && f['IpAddress'].valid}" />
+                        <label class="form-label">IP Address <sup class="text-danger fs-5">*</sup></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control mb-0" formControlName="LineCode" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['LineCode'].invalid, 'is-valid': submitted && f['LineCode'].valid}" />
+                        <label class="form-label">Line Code <sup class="text-danger fs-5">*</sup></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <select class="form-control m-0" formControlName="DeviceType"
+                            [ngClass]="{'is-invalid': submitted && f['DeviceType'].invalid, 'is-valid': submitted && f['DeviceType'].valid }">
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="customer">Customer</option>
+                            <option value="switch">Switch</option>
+                            <option value="access_point">Access Point</option>
+                        </select>
+                        <label class="form-label">Device Type <sup class="text-danger fs-5">*</sup></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" class="form-control mb-0" formControlName="Latitude" placeholder=""
+                        [ngClass]="{'is-invalid': submitted && f['Latitude'].invalid, 'is-valid': submitted && f['Latitude'].valid}" />
+                    <label class="form-label">Latitude <sup class="text-danger fs-5">*</sup></label>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-floating">
+                    <input type="number" class="form-control mb-0" formControlName="Longitude" placeholder=""
+                        [ngClass]="{'is-invalid': submitted && f['Longitude'].invalid, 'is-valid': submitted && f['Longitude'].valid}" />
+                    <label class="form-label">Longitude <sup class="text-danger fs-5">*</sup></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" (click)="activeModal.dismiss()">
+            <i class="fe fe-x me-2"></i>Close</button>
+        <button type="submit" class="btn btn-sm btn-custom"
+            [disabled]="(httpService.getLoading('actionsDevicesLoader') | async)" (click)="submit()">
+            <ng-container *ngIf="(httpService.getLoading('actionsDevicesLoader') | async)">
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span>Saving ...</span>
+            </ng-container>
+            <ng-container *ngIf="!(httpService.getLoading('actionsDevicesLoader') | async)">
+                <i class="fe fe-check me-2"></i>
+                <span>Save</span>
+            </ng-container>
+        </button>
+    </div>
+</form>

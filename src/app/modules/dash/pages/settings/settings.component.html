@@ -1,0 +1,32 @@
+<div class="header">
+    <div class="container-fluid">
+        <div class="row header-body">
+            <div class="col">
+                <h2 class="header-title">
+                    <i class="fe fe-settings"></i>
+                    {{ titleService.getTitle().split('|')[0] }}
+                </h2>
+            </div>
+            <div class="col-auto">
+                <ul class="nav nav-tabs nav-overflow header-tabs ms-5 me-4 mt-1" style="white-space: nowrap">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="/settings/general" role="button">
+                            General Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="/settings/map" role="button">
+                            Map Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="/settings/roles" role="button">
+                            Roles & Permissions
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

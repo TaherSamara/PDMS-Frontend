@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-header-title">Roles</h4>
+            <button type="button" class="btn btn-white btn-sm" (click)="add()"
+                *ngIf="publicService.hasPermission(['ADD_ROLE'])">
+                <i class="fe fe-plus me-2"></i>
+                <span>New Role</span>
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="card-table table table-nowrap table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th class="w-10">#No</th>
+                        <th class="w-20">Role Name</th>
+                        <th class="w-20">Insert By</th>
+                        <th class="w-20">Insert Date</th>
+                        <th class="w-20">Update Date</th>
+                        <th class="w-10" *ngIf="publicService.hasPermission(['EDIT_ROLE', 'DELETE_ROLE'])">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!(httpService.getLoading('rolesLoader') | async) && totalRecords > 0">
+                    <tr
+                        *ngFor="let role of roles | paginate: { itemsPerPage: size, currentPage: page, totalItems: totalRecords }; let i = index">
+                        <td>#{{ i + 1 }}</td>
+                        <td>{{ role?.name || '-' }}</td>
+                        <td>{{ role?.insert_user?.name || '-' }}</td>
+                        <td>{{ role?.insert_date | date:'longDate' }}</td>
+                        <td>{{ role?.update_date | date:'longDate' }}</td>
+                        <td *ngIf="publicService.hasPermission(['EDIT_ROLE', 'DELETE_ROLE'])">
+                            <div class="btn-group dropstart">
+                                <span data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fe fe-more-vertical black-menu fs-2"></i>
+                                </span>
+                                <ul class="dropdown-menu dropdown-menu-end" *ngIf="role?.id != 1">
+                                    <li *ngIf="publicService.hasPermission(['EDIT_ROLE'])">
+                                        <a class="dropdown-item" (click)="edit(role)">
+                                            <i class="fe fe-edit me-2"></i>Edit
+                                        </a>
+                                    </li>
+                                    <li *ngIf="publicService.hasAllPermissions(['EDIT_ROLE', 'DELETE_ROLE'])">
+                                        <hr class="m-2">
+                                    </li>
+                                    <li *ngIf="publicService.hasPermission(['DELETE_ROLE'])">
+                                        <a class="dropdown-item" (click)="delete(role)">
+                                            <i class="fe fe-trash-2 text-danger me-2"></i>
+                                            <span class="text-danger">Delete</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="(httpService.getLoading('rolesLoader') | async)">
+                    <tr *ngFor="let number of [].constructor(+size+1)">
+                        <td *ngFor="let number of [].constructor(+6)">
+                            <ngx-skeleton-loader appearance="line" animation="progress-dark"
+                                [theme]="{width:'60%',height: '24px','border-radius': '3px','margin': '0'}"></ngx-skeleton-loader>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- if no results -->
+        <app-no-results [isLoading$]="httpService.getLoading('rolesLoader')"
+            [totalRecords]="totalRecords"></app-no-results>
+
+        <!-- pagination -->
+        <app-pagination [isLoading$]="httpService.getLoading('rolesLoader')" [totalRecords]="totalRecords" [size]="size"
+            (pageChange)="list($event)"></app-pagination>
+    </div>
+</div>

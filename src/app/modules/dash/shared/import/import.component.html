@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <h4 class="modal-title">Import File</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"
+        [disabled]="(httpService.getLoading('actionImportLoader') | async)"></button>
+</div>
+<div class="modal-body">
+    <ngb-alert *ngIf="message" [type]="messageType" (closed)="showMsg(false, '')">
+        {{ message }}
+    </ngb-alert>
+
+    <div class="row align-items-center">
+        <div class="col-auto">
+            <div class="avatar avatar-xl card-avatar m-0">
+                <div class="avatar-title bg-primary-soft rounded-circle text-primary">
+                    <i class="fe fe-upload ms-1 mb-1" style="font-size: 35px;"></i>
+                </div>
+            </div>
+        </div>
+        <div class="ms-n2 col">
+            <p class="small text-muted mb-1 card-text">You Can View Here Devices Template</p>
+            <p class="small card-text"><i class="fe fe-file"></i> {{ selectedFileName }}</p>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-success btn-sm" (click)="fileInput.click()"
+                [disabled]="(httpService.getLoading('actionImportLoader') | async)">
+                <i class="fe fe-upload me-2"></i>Import File</button>
+            <input class="d-none" type="file" #fileInput (change)="onChange($event)" accept=".xlsx">
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-light" (click)="activeModal.dismiss()"
+        [disabled]="(httpService.getLoading('actionImportLoader') | async)">
+        <i class="fe fe-x me-2"></i>Close</button>
+    <button class="btn btn-sm btn-custom" [disabled]="(httpService.getLoading('actionImportLoader') | async)"
+        (click)="submit()">
+        <ng-container *ngIf="(httpService.getLoading('actionImportLoader') | async)">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <span>Importing ...</span>
+        </ng-container>
+        <ng-container *ngIf="!(httpService.getLoading('actionImportLoader') | async)">
+            <i class="fe fe-check me-2"></i>
+            <span>Import</span>
+        </ng-container>
+    </button>
+</div>

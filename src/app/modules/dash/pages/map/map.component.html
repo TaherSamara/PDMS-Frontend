@@ -1,0 +1,19 @@
+<div class="header">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h2 class="header-title">
+                        <i class="fe fe-map me-2"></i>
+                        <span>Map</span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card">
+        <app-google-map [height]="(publicService.innerHeight - 135)+'px'" [operationType]="'viewMarkers'"></app-google-map>
+    </div>
+</div>

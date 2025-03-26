@@ -1,0 +1,90 @@
+<div class="container">
+    <ngb-alert *ngIf="message" [type]="messageType" (closed)="showMsg(false, '')">
+        {{ message }}
+    </ngb-alert>
+    <div class="row justify-content-between align-items-center">
+        <div class="col">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="avatar avatar-lg">
+                        <img class="avatar-img rounded-circle" [src]="imageUrl || user.image">
+                    </div>
+                </div>
+                <div class="ms-n2 col d-none d-md-block">
+                    <h4 class="mb-1">Your Photo</h4>
+                    <small class="text-muted">PNG or JPG no bigger than 1000px wide and tall.</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-custom" (click)="fileInput.click()">Upload</button>
+            <input class="d-none" #fileInput type="file" (change)="processSingle($event)">
+        </div>
+    </div>
+    <hr class="mt-4 mb-5 mx-2">
+    <form class="form" [formGroup]="form" novalidate="novalidate">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control" formControlName="FirstName" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['FirstName'].invalid, 'is-valid': submitted && f['FirstName'].valid}">
+                        <label class="form-label">First Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control" formControlName="MiddleName" placeholder="">
+                        <label class="form-label">Middle Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control" formControlName="LastName" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['LastName'].invalid, 'is-valid': submitted && f['LastName'].valid}">
+                        <label class="form-label">Last Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input type="email" class="form-control" formControlName="PersonalEmail" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['PersonalEmail'].invalid, 'is-valid': submitted && f['PersonalEmail'].valid}">
+                        <label class="form-label">Personal Email</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input type="tel" class="form-control" formControlName="Phone" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['Phone'].invalid, 'is-valid': submitted && f['Phone'].valid}">
+                        <label class="form-label">Phone</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input type="tel" class="form-control" formControlName="Address" placeholder="">
+                        <label class="form-label">Address</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <button class="btn btn-custom" [disabled]="(httpService.getLoading('editProfileLoader') | async)" (click)="save()">
+        <ng-container *ngIf="(httpService.getLoading('editProfileLoader') | async)">
+            <span class="spinner-border spinner-border-sm me-3" role="status"></span>
+            <span>Saving Changes...</span>
+        </ng-container>
+        <ng-container *ngIf="!(httpService.getLoading('editProfileLoader') | async)">
+            <span>Save Changes</span>
+        </ng-container>
+    </button>
+</div>

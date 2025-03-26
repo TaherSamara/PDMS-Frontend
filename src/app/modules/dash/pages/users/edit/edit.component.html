@@ -1,0 +1,247 @@
+<ng-container
+    *ngIf="!(httpService.getLoading('getUsersLoader') | async) && !(httpService.getLoading('getLookupsLoader') | async) && !(httpService.getLoading('getUserLoader') | async); else loader">
+    <ng-container *ngIf="user; else notFound">
+        <form [formGroup]="form" novalidate="novalidate">
+            <div class="container-lg">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-xl-10 col-md-11 py-4">
+
+                        <!-- Step 1 -->
+                        <div *ngIf="currentStep === 1">
+                            <div class="row justify-content-center">
+                                <div class="text-center col-xl-6 col-lg-8 col-md-10 col-12">
+                                    <h6 class="mb-4 text-uppercase text-muted">Step 1 of 2</h6>
+                                    <h1 class="mb-3">Let's start to add a new user.</h1>
+                                    <p class="mb-5 text-muted">Understanding the details of the user you are creating
+                                        helps us
+                                        ask all the right questions.</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- First Name -->
+                                <div class="col-12 col-xl-4 col-md-4">
+                                    <div class="form-floating">
+                                        <input class="form-control" formControlName="FirstName" placeholder=""
+                                            [ngClass]="{'is-invalid': submitted && f['FirstName'].invalid, 'is-valid': submitted && f['FirstName'].valid}">
+                                        <label class="form-label">
+                                            First Name <sup class="text-danger fs-5">*</sup>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Middle Name -->
+                                <div class="col-12 col-xl-4 col-md-4">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input class="form-control" formControlName="MiddleName" placeholder="">
+                                            <label class="form-label">Middle Name</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Last Name -->
+                                <div class="col-12 col-xl-4 col-md-4">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input class="form-control" formControlName="LastName" placeholder=""
+                                                [ngClass]="{'is-invalid': submitted && f['LastName'].invalid, 'is-valid': submitted && f['LastName'].valid}">
+                                            <label class="form-label">
+                                                Last Name <sup class="text-danger fs-5">*</sup>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Personal Email -->
+                                <div class="col-12 col-xl-6 col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" formControlName="PersonalEmail"
+                                                placeholder=""
+                                                [ngClass]="{'is-invalid': submitted && f['PersonalEmail'].invalid, 'is-valid': submitted && f['PersonalEmail'].valid}">
+                                            <label class="form-label">
+                                                Personal Email <sup class="text-danger fs-5">*</sup>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Company Email -->
+                                <div class="col-12 col-xl-6 col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" formControlName="CompanyEmail"
+                                                placeholder=""
+                                                [ngClass]="{'is-invalid': submitted && f['CompanyEmail'].invalid, 'is-valid': submitted && f['CompanyEmail'].valid}">
+                                            <label class="form-label">
+                                                Company Email <sup class="text-danger fs-5">*</sup>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Phone Number -->
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input min="0" type="number" class="form-control" formControlName="Phone"
+                                                placeholder="">
+                                            <label class="form-label">Phone Number</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Marital Status -->
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <select class="form-control" formControlName="MaritalStatus">
+                                                <option value="" disabled>Select Marital Status</option>
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
+                                                <option value="Divorced">Divorced</option>
+                                                <option value="Widowed">Widowed</option>
+                                            </select>
+                                            <label class="form-label">Marital Status</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Role -->
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <select class="form-control" formControlName="Role"
+                                                [ngClass]="{'is-invalid': submitted && f['Role'].invalid, 'is-valid': submitted && f['Role'].valid}">
+                                                <option value="" disabled>Select Role</option>
+                                                <option *ngFor="let item of lookups.roles" [value]="item.id">
+                                                    {{ item.name }}
+                                                </option>
+                                            </select>
+                                            <label class="form-label">Role <sup class="text-danger fs-5">*</sup></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Receives Emails -->
+                                <div class="col-12 col-xl-3 col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <select class="form-control" formControlName="ReceivesEmails">
+                                                <option value="1">Receives</option>
+                                                <option value="0">Not Receiving</option>
+                                            </select>
+                                            <label class="form-label">Receives Emails</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Email Frequency (Hours) -->
+                                <div class="col-12 col-xl-3 col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input type="number" class="form-control"
+                                                formControlName="EmailFrequencyInHours" placeholder=""
+                                                [ngClass]="{'is-invalid': submitted && f['EmailFrequencyInHours'].invalid, 'is-valid': submitted && f['EmailFrequencyInHours'].valid}">
+                                            <label class="form-label">
+                                                Email Frequency (Hours) <sup class="text-danger fs-5">*</sup>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Address -->
+                                <div class="col-12 col-xl-6 col-md-12">
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input class="form-control" formControlName="Address" placeholder="">
+                                            <label class="form-label">Address</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="mt-1 mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <button class="btn btn-white" routerLink="/users">Cancel</button>
+                                </div>
+                                <div class="text-center col">
+                                    <h6 class="text-uppercase text-muted mb-0">Step 1 of 2</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-custom" (click)="nextStep()">Continue</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div *ngIf="currentStep === 2">
+                            <div class="row justify-content-center">
+                                <div class="text-center col-xl-6 col-lg-8 col-md-10 col-12">
+                                    <h6 class="mb-4 text-uppercase text-muted">Step 2 of 2</h6>
+                                    <h1 class="mb-3">Finally, let's get the last required data.</h1>
+                                    <p class="mb-5 text-muted">Here you can choose a profile picture for the user if you
+                                        want.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <ngb-alert *ngIf="message" [type]="messageType" (closed)="showMsg(false, '')">
+                                    {{ message }}
+                                </ngb-alert>
+                                <div class="col-12 col-md-5">
+                                    <div class="dropzone" role="presentation" tabindex="0"
+                                        (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                                        (drop)="onDropSingle($event)" (click)="fileInput.click()">
+                                        <input #fileInput type="file" (change)="processSingle($event)" accept="image/*"
+                                            hidden>
+                                        <div class="dz-message p-0" style="width: 100%; height: 322px;">
+                                            <div class="image-container" style="width: 100%;">
+                                                <img [src]="imageUrl || user?.image"
+                                                    style="width: 100%; height: 320px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <button class="btn btn-white" (click)="previousStep()">Back</button>
+                                </div>
+                                <div class="text-center col">
+                                    <h6 class="text-uppercase text-muted mb-0">Step 2 of 2</h6>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-custom"
+                                        [disabled]="(httpService.getLoading('editUserLoader') | async)"
+                                        (click)="save()">
+                                        <ng-container *ngIf="(httpService.getLoading('editUserLoader') | async)">
+                                            <span class="spinner-border spinner-border-sm me-3" role="status"></span>
+                                            <span>Updating...</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="!(httpService.getLoading('editUserLoader') | async)">
+                                            <span>Update</span>
+                                        </ng-container>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <ng-template #notFound>
+        <div class="text-center py-5">
+            <i class="fe fe-alert-triangle fs-1 text-muted"></i>
+            <p class="text-muted mt-3">User not found!</p>
+        </div>
+    </ng-template>
+</ng-container>
+<ng-template #loader>
+    <div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+        <span class="loader"></span>
+    </div>
+</ng-template>

@@ -1,0 +1,27 @@
+<div class="header">
+    <div class="container-fluid">
+        <div class="row header-body">
+            <div class="col">
+                <h2 class="header-title">
+                    <i class="fe fe-user"></i>
+                    {{ titleService.getTitle().split('|')[0] }}
+                </h2>
+            </div>
+            <div class="col-auto">
+                <ul class="nav nav-tabs nav-overflow header-tabs ms-5 me-4 mt-1" style="white-space: nowrap">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="/account/general" role="button">
+                            General
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="/account/passwords" role="button">
+                            Passwords
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

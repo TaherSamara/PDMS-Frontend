@@ -1,0 +1,81 @@
+<div class="header">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center">
+        <div class="col d-flex">
+          <h2 class="header-title">
+            <i class="fe fe-home"></i>
+            Dashboard
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row" *ngIf="publicService.hasPermission(['VIEW_STATISTICS'])">
+    <div class="col-12 col-xl-3 col-md-6">
+      <div class="card" role="button" routerLink="/devices">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h5 class="text-uppercase mb-2">Devices</h5>
+              <h2 class="mb-0">{{ numbers[0] }}</h2>
+            </div>
+            <div class="col-auto">
+              <span class="h3 fe fe-wifi rounded-circle"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-3 col-md-6">
+      <div class="card" role="button" routerLink="/devices/1">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h5 class="text-uppercase mb-2">Online</h5>
+              <h2 class="mb-0">{{ numbers[1] }}</h2>
+            </div>
+            <div class="col-auto">
+              <span class="h3 fe fe-wifi rounded-circle"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-3 col-md-6">
+      <div class="card" role="button" routerLink="/devices/2">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h5 class="text-uppercase mb-2">Offline (Short-Term)</h5>
+              <h2 class="mb-0">{{ numbers[2] }}</h2>
+            </div>
+            <div class="col-auto">
+              <span class="h3 fe fe-wifi-off rounded-circle"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-3 col-md-6">
+      <div class="card" role="button" routerLink="/devices/3">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h5 class="text-uppercase mb-2">Offline (Long-Term)</h5>
+              <h2 class="mb-0">{{ numbers[3] }}</h2>
+            </div>
+            <div class="col-auto">
+              <span class="h3 fe fe-wifi-off rounded-circle"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="publicService.hasPermission(['VIEW_STATISTICS_BY_MONTH'])">
+    <app-charts-widget1></app-charts-widget1>
+  </div>
+</div>

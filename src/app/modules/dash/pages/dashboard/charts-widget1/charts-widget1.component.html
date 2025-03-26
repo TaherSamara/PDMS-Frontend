@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-header-title">Monthly Performance Overview</h4>
+  </div>
+  <div class="p-3 ps-0">
+    <div #chartRef id="kt_charts_widget_1_chart" [style.height]="(publicService.innerHeight - 335)+'px'">
+      <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+        [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip"
+        [dataLabels]="chartOptions.dataLabels"></apx-chart>
+    </div>
+  </div>
+</div>

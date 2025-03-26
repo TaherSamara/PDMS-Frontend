@@ -1,0 +1,267 @@
+<div class="container">
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-header-title">Map Settings</h4>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="reset()">
+                <i class="fe fe-refresh-cw me-2"></i> Reset to Default
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="save()">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <!-- 1. Map Settings -->
+                        <h5 class="section-header">Map Settings</h5>
+                        <div class="list-group list-group-flush">
+                            <!-- Select Status -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Select Status</label>
+                                <p class="text-muted small">
+                                    Choose which status of devices you want to display on the map. This can include
+                                    operational, offline, degraded, or other states.
+                                </p>
+                                <select class="form-control" formControlName="Status">
+                                    <option value="0">All Statuses</option>
+                                    <option value="1">Online</option>
+                                    <option value="2">Offline (Short-Term)</option>
+                                    <option value="3">Offline (Long-Term)</option>
+                                </select>
+                            </div>
+
+                            <!-- Map Layer -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Map Layer</label>
+                                <p class="text-muted small">
+                                    Select the map view mode: Road Map for standard view, Satellite for imagery, or
+                                    Terrain to see elevation
+                                    details.
+                                </p>
+                                <select class="form-control" formControlName="MapLayer">
+                                    <option value="roadmap">Road Map</option>
+                                    <option value="satellite">Satellite</option>
+                                    <option value="terrain">Terrain</option>
+                                </select>
+                            </div>
+
+                            <!-- Disable Double Click Zoom -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Disable Double Click Zoom</label>
+                                <p class="text-muted small">
+                                    Enable this option to prevent zooming in on the map when the user double-clicks.
+                                </p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        formControlName="DisableDoubleClickZoom" />
+                                </div>
+                            </div>
+
+                            <!-- Auto Fit Bounds -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Auto Fit Bounds</label>
+                                <p class="text-muted small">
+                                    Automatically adjust the map's zoom and center to ensure all markers are visible
+                                    within the current view.
+                                </p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="AutoFitBounds" />
+                                </div>
+                            </div>
+
+                            <!-- Show Places -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Places</label>
+                                <p class="text-muted small">
+                                    Enable this option to display nearby places of interest, such as restaurants, shops,
+                                    and landmarks.
+                                </p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="ShowPlaces" />
+                                </div>
+                            </div>
+
+                            <!-- Zoom Level -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Zoom Level</label>
+                                <p class="text-muted small">
+                                    Set the default zoom level for the map. Values range from 1 (farthest) to 20
+                                    (closest).
+                                </p>
+                                <input type="number" class="form-control" formControlName="ZoomLevel" min="1"
+                                    max="20" />
+                            </div>
+                        </div>
+
+                        <!-- 2. Marker Settings -->
+                        <h5 class="section-header mt-4">Marker Settings</h5>
+                        <div class="list-group list-group-flush">
+                            <!-- Draggable Icons -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Draggable Icons</label>
+                                <p class="text-muted small">Allow icons to be dragged to new locations on the map.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="DraggableIcons" />
+                                </div>
+                            </div>
+
+                            <!-- Show Gridlines -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Gridlines</label>
+                                <p class="text-muted small">Enable or disable gridlines on the map.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="ShowGridlines" />
+                                </div>
+                            </div>
+
+                            <!-- Marker Animation -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Marker Animation</label>
+                                <p class="text-muted small">Choose marker animation style.</p>
+                                <select class="form-control" formControlName="MarkerAnimation">
+                                    <option value="bounce">Bounce</option>
+                                    <option value="drop">Drop</option>
+                                </select>
+                            </div>
+
+                            <!-- Clickable Icons -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Clickable Icons</label>
+                                <p class="text-muted small">Allow users to click on icons to see more details.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="ClickableIcons" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <!-- 3. Control Settings -->
+                        <h5 class="section-header">Control Settings</h5>
+                        <div class="list-group list-group-flush">
+                            <!-- Show Compass -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Compass</label>
+                                <p class="text-muted small">Enable or disable the compass on the map for easier
+                                    navigation.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="ShowCompass" />
+                                </div>
+                            </div>
+
+                            <!-- Show Zoom Controls -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Zoom Controls</label>
+                                <p class="text-muted small">Enable or disable zoom controls for the map interface.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        formControlName="ShowZoomControls" />
+                                </div>
+                            </div>
+
+                            <!-- Show Street View -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Street View</label>
+                                <p class="text-muted small">Enable or disable the street view mode for a 360-degree
+                                    view.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="ShowStreetView" />
+                                </div>
+                            </div>
+
+                            <!-- Show Fullscreen Control -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Fullscreen Control</label>
+                                <p class="text-muted small">Enable or disable the fullscreen control for the map.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        formControlName="ShowFullscreenControl" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 4. Interactivity Settings -->
+                        <h5 class="section-header mt-4">Interactivity Settings</h5>
+                        <div class="list-group list-group-flush">
+                            <!-- Pan Control -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Pan Control</label>
+                                <p class="text-muted small">Enable or disable the ability to drag the map to move
+                                    around.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="PanControl" />
+                                </div>
+                            </div>
+
+                            <!-- Scroll Wheel Zoom -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Scroll Wheel Zoom</label>
+                                <p class="text-muted small">Allow zooming in and out of the map using the mouse scroll
+                                    wheel.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="ScrollWheelZoom" />
+                                </div>
+                            </div>
+
+                            <!-- Keyboard Shortcuts -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Keyboard Shortcuts</label>
+                                <p class="text-muted small">Enable or disable keyboard shortcuts for map navigation.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        formControlName="KeyboardShortcuts" />
+                                </div>
+                            </div>
+
+                            <!-- Drag to Rotate -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Drag to Rotate</label>
+                                <p class="text-muted small">Allow rotation of the map by dragging with the mouse or
+                                    touch gestures.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="DragToRotate" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 5. Overlay Settings -->
+                        <h5 class="section-header mt-4">Overlay Settings</h5>
+                        <div class="list-group list-group-flush">
+                            <!-- Show Traffic Layer -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Traffic Layer</label>
+                                <p class="text-muted small">Enable real-time traffic data.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        formControlName="ShowTrafficLayer" />
+                                </div>
+                            </div>
+
+                            <!-- Show Transit Layer -->
+                            <div class="list-group-item">
+                                <label class="form-label mb-0">Show Transit Layer</label>
+                                <p class="text-muted small">Display public transport routes.</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        formControlName="ShowTransitLayer" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="text-end mt-4">
+                    <button type="button" class="btn btn-outline-secondary me-2" (click)="reset()">Reset
+                        Options</button>
+                    <button type="submit" class="btn btn-custom">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<br>

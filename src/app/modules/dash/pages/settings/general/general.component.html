@@ -1,0 +1,51 @@
+<div class="container mt-md-4">
+    <form [formGroup]="form" novalidate="novalidate">
+        <div class="row" *ngIf="publicService.hasPermission(['VIEW_SETTINGS'])">
+            <div class="col-12 col-md-3">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control" formControlName="CompanyName" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['CompanyName'].invalid, 'is-valid': submitted && f['CompanyName'].valid}">
+                        <label class="form-label">Company Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input type="email" class="form-control" formControlName="CompanyEmail" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['CompanyEmail'].invalid, 'is-valid': submitted && f['CompanyEmail'].valid}">
+                        <label class="form-label">Company Email</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control" formControlName="CompanyPhone" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['CompanyPhone'].invalid, 'is-valid': submitted && f['CompanyPhone'].valid}">
+                        <label class="form-label">Company Phone</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="form-group">
+                    <div class="form-floating">
+                        <input class="form-control" formControlName="CompanyAddress" placeholder=""
+                            [ngClass]="{'is-invalid': submitted && f['CompanyAddress'].invalid, 'is-valid': submitted && f['CompanyAddress'].valid}">
+                        <label class="form-label">Company Address</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <button class="btn btn-custom" [disabled]="(httpService.getLoading('editSettingsLoader') | async)" (click)="save()">
+        <ng-container *ngIf="(httpService.getLoading('editSettingsLoader') | async)">
+            <span class="spinner-border spinner-border-sm me-3" role="status"></span>
+            <span>Saving Changes...</span>
+        </ng-container>
+        <ng-container *ngIf="!(httpService.getLoading('editSettingsLoader') | async)">
+            <span>Save Changes</span>
+        </ng-container>
+    </button>
+</div>

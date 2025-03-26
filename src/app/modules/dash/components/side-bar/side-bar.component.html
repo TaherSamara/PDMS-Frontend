@@ -1,0 +1,65 @@
+<nav>
+    <div class="fixed-sidebar">
+        <div class="text-center w-100">
+            <div class="avatar avatar-lg mb-4">
+                <img class="avatar-img rounded-circle" src="assets/img/white-logo.jpg" role="button" routerLink="/">
+            </div>
+        </div>
+        <div class="menu-item" routerLinkActive="active" routerLink="/dashboard"
+            *ngIf="publicService.hasPermission(['DASHBOARD'])">
+            <i class="fe fe-home"></i>
+            <p>Dashboard</p>
+        </div>
+        <div class="menu-item" routerLinkActive="active" routerLink="/users"
+            *ngIf="publicService.hasPermission(['USERS'])">
+            <i class="fe fe-user"></i>
+            <p>Users</p>
+        </div>
+        <div class="menu-item" routerLinkActive="active" routerLink="/devices"
+            *ngIf="publicService.hasPermission(['DEVICES'])">
+            <i class="fe fe-cast"></i>
+            <p>Devices</p>
+        </div>
+        <div class="menu-item" routerLinkActive="active" routerLink="/map" *ngIf="publicService.hasPermission(['MAP'])">
+            <i class="fe fe-map"></i>
+            <p>Map</p>
+        </div>
+        <div class="menu-item" routerLinkActive="active" routerLink="/settings"
+            *ngIf="publicService.hasPermission(['SETTINGS'])">
+            <i class="fe fe-settings"></i>
+            <p>Settings</p>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <div class="btn-group dropend">
+            <button class="btn btn-sm rounded-circle p-0" data-bs-toggle="dropdown" aria-expanded="true"
+                style="border-color: #ffffff00;">
+                <div class="avatar avatar-sm">
+                    <img class="avatar-img border border-2 rounded-circle" [src]="user?.image" role="button">
+                </div>
+            </button>
+            <div class="dropdown-menu mt-1 p-3" style="width: 280px;border-radius: 15px;">
+                <div class="text-center card-body pt-4 px-3 pb-2">
+                    <div class="avatar avatar-xl mb-3">
+                        <img class="avatar-img rounded-circle border border-3" [src]="user?.image" role="button">
+                    </div>
+                    <h2 class="card-title">{{ user?.first_name + ' ' + user?.last_name }}</h2>
+                    <p class="small text-muted mb-3">{{ user?.company_email }}</p>
+                </div>
+                <ul>
+                    <li>
+                        <a class="dropdown-item fs-3" routerLink="/account">
+                            <i class="fe fe-user me-2"></i>
+                            <span>Account</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item fs-3" (click)="logout()">
+                            <i class="fe fe-log-out me-2"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

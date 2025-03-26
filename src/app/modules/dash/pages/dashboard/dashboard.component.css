@@ -1,0 +1,51 @@
+h5 {
+  letter-spacing: .8px;
+}
+
+.row .col-12:nth-child(1) .card {
+  background-color: #d8ecf8; /* الأزرق */
+  color: black;
+  border: none;
+}
+
+.row .col-12:nth-child(2) .card {
+  background-color: #d4edda; /* أخضر فاتح */
+  color: black;
+  border: none;
+}
+
+.row .col-12:nth-child(3) .card {
+  background-color: #fff3cd; /* برتقالي فاتح */
+  color: black;
+  border: none;
+}
+
+.row .col-12:nth-child(4) .card {
+  background-color: #f8d7da; /* أحمر فاتح */
+  color: black;
+  border: none;
+}
+
+.row .col-12:nth-child(1) .card span {
+  background-color: #009FD7; /* الأزرق */
+  padding: 10px;
+  color: #fff;
+}
+
+.row .col-12:nth-child(2) .card span {
+  background-color: #28a745; /* الأخضر الجديد */
+  padding: 10px;
+  color: #fff;
+}
+
+.row .col-12:nth-child(3) .card span {
+  background-color: #ffc107; /* البرتقالي الجديد */
+  padding: 10px;
+  color: #fff;
+}
+
+.row .col-12:nth-child(4) .card span {
+  background-color: #dc3545; /* الأحمر الجديد */
+  padding: 10px;
+  color: #fff;
+}
